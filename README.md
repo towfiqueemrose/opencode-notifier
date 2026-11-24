@@ -55,6 +55,9 @@ The installer copies the plugin to
 `~/.config/opencode/plugins/opencode-notifier`, where OpenCode discovers it
 automatically. Restart OpenCode, then run `/task-alert-setup`.
 
+Use one install method. Installing the GitHub package and then running the zip
+installer creates two copies of the same plugin.
+
 The shared package uses OpenCode's built-in chimes. If you already override
 `attention.sounds` in `cli.json`, your overrides are respected.
 

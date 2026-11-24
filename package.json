@@ -1,0 +1,38 @@
+{
+  "name": "opencode-notifier",
+  "version": "1.0.0",
+  "description": "Desktop, sound, and Telegram alerts for OpenCode task completion, questions, and permission requests.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Towfique Emrose",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/towfiqueemrose/opencode-notifier.git"
+  },
+  "homepage": "https://github.com/towfiqueemrose/opencode-notifier#readme",
+  "bugs": {
+    "url": "https://github.com/towfiqueemrose/opencode-notifier/issues"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "notifications",
+    "telegram",
+    "toast"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./tui": "./src/tui.ts"
+  },
+  "files": [
+    "src",
+    "assets",
+    "README.md",
+    "LICENSE",
+    "install.ps1",
+    "install.sh"
+  ],
+  "dependencies": {
+    "@opencode/plugin": "latest"
+  }
+}

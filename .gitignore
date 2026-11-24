@@ -1,0 +1,6 @@
+node_modules/
+telegram.json
+opencode-notifier-debug.log
+*.zip
+.DS_Store
+Thumbs.db

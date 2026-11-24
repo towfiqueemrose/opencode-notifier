@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>OpenCode Notifier — Installation Guide</title>
+<meta name="author" content="Towfique Emrose">
+<meta name="description" content="How to install and configure the OpenCode Notifier plugin with Telegram alerts.">
+<meta name="keywords" content="OpenCode, plugin, Telegram, notifications, install guide">
+<style>
+  @page {
+    size: A4;
+    margin: 15mm 15mm 17mm;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    color: #172033;
+    background: #ffffff;
+    font-family: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.5;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body { padding: 0; }
+  a { color: #0f766e; text-decoration: none; }
+  code, pre {
+    font-family: "Cascadia Code", "Consolas", "SFMono-Regular", Menlo, monospace;
+  }
+  .cover {
+    border: 1px solid #dbe3ea;
+    border-radius: 18px;
+    padding: 22px 24px 20px;
+    background:
+      radial-gradient(circle at 100% 0%, rgba(79, 70, 229, 0.10), transparent 38%),
+      radial-gradient(circle at 0% 100%, rgba(15, 118, 110, 0.10), transparent 42%),
+      #ffffff;
+    position: relative;
+    overflow: hidden;
+    break-inside: avoid;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #0f766e, #4f46e5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex: 0 0 auto;
+  }
+  .mark svg { width: 22px; height: 22px; }
+  .brand-text {
+    font-size: 9pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #0f766e;
+    font-weight: 700;
+  }
+  h1 {
+    font-size: 28pt;
+    line-height: 1.08;
+    margin: 4px 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    font-size: 12.5pt;
+    color: #4b5563;
+    max-width: 155mm;
+    margin: 0 0 14px;
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+  }
+  .pill {
+    border: 1px solid #d8e0e8;
+    background: #f8fafc;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 8.6pt;
+    color: #475569;
+  }
+  .pill strong { color: #0f766e; }
+  h2 {
+    font-size: 15.5pt;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    break-after: avoid;
+  }
+  h3 {
+    font-size: 11.5pt;
+    margin: 14px 0 5px;
+    break-after: avoid;
+  }
+  p { margin: 0 0 8px; }
+  .section { margin-top: 14px; }
+  .section.keep { break-inside: avoid; }
+  .step {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0;
+    break-inside: avoid;
+  }
+  .step-no {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    background: #0f766e;
+    color: #fff;
+    font-weight: 700;
+    font-size: 10pt;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-top: 1px;
+  }
+  .step-body { flex: 1; }
+  .step-body p:last-child { margin-bottom: 0; }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .card {
+    border: 1px solid #e1e7ee;
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: #ffffff;
+    break-inside: avoid;
+  }
+  .card h3 { margin-top: 0; }
+  .card .tag {
+    display: inline-block;
+    font-size: 8pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0f766e;
+    margin-bottom: 4px;
+  }
+  .card.recommended {
+    border-color: #99d5cc;
+    box-shadow: inset 0 0 0 1px #d7f0eb;
+    background: #f7fffd;
+  }
+  pre {
+    background: #0f172a;
+    color: #e8eef7;
+    border-radius: 9px;
+    padding: 8px 10px;
+    font-size: 9pt;
+    line-height: 1.35;
+    overflow: hidden;
+    margin: 6px 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  pre .prompt { color: #7dd3c7; }
+  code.inline {
+    background: #eef2f7;
+    border: 1px solid #e1e7ee;
+    border-radius: 5px;
+    padding: 0 4px;
+    font-size: 9pt;
+    color: #0f172a;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 4px;
+    font-size: 9.4pt;
+    break-inside: avoid;
+  }
+  th {
+    text-align: left;
+    background: #0f766e;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 6px 8px;
+    font-size: 8.8pt;
+    letter-spacing: 0.02em;
+  }
+  td {
+    border-bottom: 1px solid #e5eaf0;
+    padding: 6px 8px;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: #f8fafc; }
+  td strong { color: #0f172a; }
+  .callout {
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 10px 0;
+    break-inside: avoid;
+    font-size: 9.8pt;
+  }
+  .callout.warn {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+  }
+  .callout.info {
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+  }
+  .callout strong { display: block; margin-bottom: 2px; }
+  ul, ol { margin: 5px 0 8px; padding-left: 18px; }
+  li { margin: 3px 0; }
+  .muted { color: #64748b; }
+  .small { font-size: 9pt; }
+  .divider {
+    height: 1px;
+    background: #e5eaf0;
+    margin: 16px 0;
+  }
+  .footer {
+    margin-top: 18px;
+    padding-top: 8px;
+    border-top: 1px solid #e5eaf0;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: #64748b;
+    font-size: 8.5pt;
+  }
+  .page-break { break-before: page; }
+  .no-break { break-inside: avoid; }
+  .kbd {
+    display: inline-block;
+    border: 1px solid #cbd5e1;
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 0 4px;
+    font-family: "Cascadia Code", Consolas, monospace;
+    font-size: 8.8pt;
+    background: #f8fafc;
+  }
+  .quickstart {
+    margin-top: 16px;
+    border: 1px solid #dbe3ea;
+    border-radius: 12px;
+    padding: 12px 14px;
+    background: #f8fafc;
+    break-inside: avoid;
+  }
+  .quickstart .qs-title {
+    font-size: 9pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0f766e;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .qs-steps {
+    display: flex;
+    gap: 10px;
+  }
+  .qs-steps > div {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 9.3pt;
+  }
+  .qs-steps span {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: #0f766e;
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 9pt;
+    flex: 0 0 auto;
+  }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="brand">
+    <div class="mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+        <path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+      </svg>
+    </div>
+    <div class="brand-text">OpenCode extension guide</div>
+  </div>
+  <h1>OpenCode Notifier</h1>
+  <p class="subtitle">Desktop toast, attention chime, and Telegram messages when an OpenCode task finishes or needs your input.</p>
+  <div class="meta">
+    <span class="pill">Version <strong>1.0.1</strong></span>
+    <span class="pill">Windows · macOS · Linux</span>
+    <span class="pill">OpenCode 2.4+</span>
+    <span class="pill"><a href="https://github.com/towfiqueemrose/opencode-notifier"><strong>github.com/towfiqueemrose/opencode-notifier</strong></a></span>
+  </div>
+</section>
+
+<div class="section keep">
+  <h2>What you get</h2>
+  <table>
+    <thead>
+      <tr><th>OpenCode event</th><th>Toast and chime</th><th>Telegram</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Task completes</td><td><strong>OpenCode Task Completed</strong></td><td>✅ message</td></tr>
+      <tr><td>Task is interrupted</td><td><strong>OpenCode Task Interrupted</strong></td><td>⏹ message</td></tr>
+      <tr><td>Task fails</td><td><strong>OpenCode Task Failed</strong></td><td>❌ message</td></tr>
+      <tr><td>The question tool asks you something</td><td><strong>OpenCode Question</strong></td><td>❓ message</td></tr>
+      <tr><td>A permission request needs approval</td><td><strong>OpenCode Permission Required</strong></td><td>🔐 message</td></tr>
+    </tbody>
+  </table>
+  <p class="small muted">Only one of several open TUI windows claims an alert, so a single event does not send duplicate messages.</p>
+</div>
+
+<div class="section keep">
+  <h2>Before you start</h2>
+  <ul>
+    <li><strong>OpenCode 2.4 or newer</strong>, running in a terminal TUI. Headless runs do not alert.</li>
+    <li>A Telegram account if you want Telegram delivery.</li>
+    <li>A terminal where the <code class="inline">opencode</code> command works.</li>
+  </ul>
+
+  <div class="quickstart">
+    <div class="qs-title">Quick start</div>
+    <div class="qs-steps">
+      <div><span>1</span> Install the plugin</div>
+      <div><span>2</span> Run <code class="inline">/notifier</code></div>
+      <div><span>3</span> Run <code class="inline">/notifier-test</code></div>
+    </div>
+  </div>
+</div>
+
+<div class="section page-break">
+  <h2>Step 1 — Install the plugin</h2>
+  <p>Choose <strong>one</strong> method. Do not install both; two copies would run at the same time.</p>
+
+  <div class="grid-2">
+    <div class="card recommended">
+      <span class="tag">Recommended</span>
+      <h3>A. Install from GitHub</h3>
+      <p class="small">One command. Updates through OpenCode.</p>
+      <pre><span class="prompt">$</span> opencode plugin add github:towfiqueemrose/opencode-notifier</pre>
+      <p class="small muted">Restart OpenCode if <code class="inline">/notifier</code> is not available right away.</p>
+      <p class="small muted">Works on Windows, macOS, and Linux. Update later with <code class="inline">opencode plugin update</code>.</p>
+    </div>
+    <div class="card">
+      <span class="tag">Offline</span>
+      <h3>B. Install from the zip</h3>
+      <p class="small">Use this when the sender shared <code class="inline">opencode-notifier.zip</code>.</p>
+      <p class="small"><strong>Windows:</strong></p>
+      <pre>Expand-Archive opencode-notifier.zip -DestinationPath .
+cd opencode-notifier
+powershell -ExecutionPolicy Bypass -File .\install.ps1</pre>
+      <p class="small"><strong>macOS / Linux:</strong></p>
+      <pre>unzip opencode-notifier.zip
+cd opencode-notifier
+./install.sh</pre>
+      <p class="small muted">Restart OpenCode after the installer finishes.</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <strong>Check the install</strong>
+    Run <code class="inline">opencode plugin list</code> from your home directory. You should see <code class="inline">opencode-notifier</code>. Then restart the TUI before continuing.
+  </div>
+</div>
+
+<div class="section">
+  <h2>Step 2 — Create your Telegram bot</h2>
+  <p>Each person needs their own bot. Never share a bot token.</p>
+
+  <div class="step">
+    <div class="step-no">1</div>
+    <div class="step-body">
+      <p>Open <strong>@BotFather</strong> in Telegram and send <code class="inline">/newbot</code>.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-no">2</div>
+    <div class="step-body">
+      <p>Choose a display name and a username ending in <code class="inline">bot</code>.</p>
+    </div>
+  </div>
+  <div class="step">
+    <div class="step-no">3</div>
+    <div class="step-body">
+      <p>Copy the token BotFather sends you. It looks like <code class="inline">123456789:AA...</code>.</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Step 3 — Connect the bot in OpenCode</h2>
+  <p>Run this command in the OpenCode TUI:</p>
+  <pre><span class="prompt">/</span>notifier</pre>
+
+  <div class="step">
+    <div class="step-no">1</div>
+    <div class="step-body"><p>Paste the bot token when the wizard asks for it.</p></div>
+  </div>
+  <div class="step">
+    <div class="step-no">2</div>
+    <div class="step-body"><p>The wizard validates the token and shows the bot username.</p></div>
+  </div>
+  <div class="step">
+    <div class="step-no">3</div>
+    <div class="step-body"><p>Open <code class="inline">https://t.me/&lt;botusername&gt;</code> in Telegram and press <strong>Start</strong>.</p></div>
+  </div>
+  <div class="step">
+    <div class="step-no">4</div>
+    <div class="step-body"><p>Return to OpenCode and choose <strong>Check again</strong>. The wizard finds your chat automatically.</p></div>
+  </div>
+  <div class="step">
+    <div class="step-no">5</div>
+    <div class="step-body"><p>It sends a test message, then saves <code class="inline">~/.config/opencode/telegram.json</code>.</p></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Step 4 — Test it</h2>
+  <p>Run the built-in test in the TUI:</p>
+  <pre><span class="prompt">/</span>notifier-test</pre>
+  <p>You should see an <strong>OpenCode Task Completed</strong> toast, hear the chime, and receive a Telegram message. The TUI also shows a small confirmation with the status of each channel.</p>
+
+  <h3>Test the live events</h3>
+  <ul>
+    <li>Ask the agent to use the <strong>question</strong> tool. You should get an <strong>OpenCode Question</strong> toast and a ❓ Telegram message.</li>
+    <li>Trigger an approval prompt, for example by reading a real <code class="inline">.env</code> file. You should get <strong>OpenCode Permission Required</strong> and a 🔐 Telegram message.</li>
+  </ul>
+
+  <div class="divider"></div>
+
+  <h2>Configuration</h2>
+  <p>The plugin works without editing configuration. Credentials live in:</p>
+  <pre>~/.config/opencode/telegram.json</pre>
+  <p>Environment variables override the file, which is useful for shared machines or scripts:</p>
+  <pre>OPENCODE_TELEGRAM_TOKEN=123456789:AA...
+OPENCODE_TELEGRAM_CHAT_ID=123456789</pre>
+
+  <h3>Sounds</h3>
+  <p>The plugin uses OpenCode's built-in sound names: <code class="inline">done</code>, <code class="inline">subagent_done</code>, <code class="inline">question</code>, <code class="inline">permission</code>, and <code class="inline">error</code>. To use your own WAV or MP3 files, override them in <code class="inline">cli.json</code>:</p>
+  <pre>{
+  "attention": {
+    "sounds": {
+      "question": "C:/Users/me/sounds/question.wav",
+      "permission": "C:/Users/me/sounds/permission.wav"
+    }
+  }
+}</pre>
+
+  <div class="callout info">
+    <strong>Telegram is one-way</strong>
+    Messages only notify you. Answer questions and approve permissions in the OpenCode TUI.
+  </div>
+</div>
+
+<div class="section">
+  <h2>Troubleshooting</h2>
+  <table>
+    <thead><tr><th style="width: 33%">Problem</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>Telegram says <strong>chat not found</strong></td><td>Open the bot chat and press <strong>Start</strong>, then run <code class="inline">/notifier</code> again.</td></tr>
+      <tr><td>Chat detection blocked by a webhook</td><td>Enter the chat ID manually in the wizard. Get it from <strong>@userinfobot</strong> in Telegram.</td></tr>
+      <tr><td>No Telegram messages</td><td>Check that <code class="inline">telegram.json</code> exists and has <code class="inline">"enabled": true</code>. Run <code class="inline">/notifier-test</code>.</td></tr>
+      <tr><td>No toast</td><td>On Windows the toast comes from PowerShell and may be attributed to <strong>Windows PowerShell</strong>. Check Focus Assist and notification settings.</td></tr>
+      <tr><td>No question or permission alert</td><td>Confirm the request happened while a TUI with the plugin was connected. Headless runs do not send these alerts.</td></tr>
+      <tr><td>Plugin not loaded</td><td>Run <code class="inline">opencode plugin list</code>, restart OpenCode, and check <code class="inline">~/.local/share/opencode/log/opencode.log</code> for plugin errors.</td></tr>
+      <tr><td>Need details</td><td>Enable <code class="inline">"debug": true</code> in the plugin options and read <code class="inline">~/.config/opencode/opencode-notifier-debug.log</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <strong>Keep your token private</strong>
+    A Telegram bot token gives full control of that bot. Never commit <code class="inline">telegram.json</code> or paste the token into a chat, issue, or screenshot. Each person should create their own bot with @BotFather.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2>Disable or uninstall</h2>
+  <p>Remove the GitHub install:</p>
+  <pre>opencode plugin remove opencode-notifier</pre>
+  <p class="small">For the zip install, delete the folder:</p>
+  <pre>~/.config/opencode/plugins/opencode-notifier</pre>
+  <p class="small">Your <code class="inline">telegram.json</code> is not deleted automatically. Remove it yourself if you want to erase the credentials.</p>
+
+  <div class="footer">
+    <span><strong>OpenCode Notifier</strong> · MIT License</span>
+    <span><a href="https://github.com/towfiqueemrose/opencode-notifier">github.com/towfiqueemrose/opencode-notifier</a></span>
+  </div>
+</div>
+
+</body>
+</html>

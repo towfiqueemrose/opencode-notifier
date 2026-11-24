@@ -3,7 +3,48 @@
 Desktop notifications, attention chimes, and Telegram messages for
 [OpenCode](https://opencode.ai) 2.4+.
 
-Get a toast, a chime, and a Telegram message when:
+Get a toast, a chime, and a Telegram message when OpenCode finishes a task or
+needs your input.
+
+[Download the PDF installation guide](docs/install-guide.pdf)
+
+## Quick start
+
+1. Install the plugin:
+
+   ```sh
+   opencode plugin add github:towfiqueemrose/opencode-notifier
+   ```
+
+2. Restart the OpenCode TUI.
+
+3. Create a bot with **@BotFather** in Telegram and copy its token.
+
+4. In OpenCode, run:
+
+   ```text
+   /notifier
+   ```
+
+5. Paste the token, press **Start** in the bot chat, then choose
+   **Check again** in the wizard.
+
+6. Verify delivery:
+
+   ```text
+   /notifier-test
+   ```
+
+## Commands
+
+| Command | Purpose |
+| --- | --- |
+| `/notifier` | Configure the Telegram bot token and chat |
+| `/notifier-test` | Test toast, chime, and Telegram delivery |
+| `/notifier-setup`, `/task-alert-setup` | Aliases for `/notifier` |
+| `/notifiertest`, `/task-alert-test` | Aliases for `/notifier-test` |
+
+## What it does
 
 | Event | Toast | Chime | Telegram |
 | --- | --- | --- | --- |
@@ -24,16 +65,19 @@ duplicate chimes or Telegram messages.
 
 ## Install
 
-### From GitHub (one command)
+Choose **one** method. Installing both the GitHub package and the zip creates
+two copies of the same plugin.
+
+### Option 1: GitHub (recommended)
 
 ```sh
 opencode plugin add github:towfiqueemrose/opencode-notifier
 ```
 
-Restart OpenCode if the plugin does not appear immediately, then run
-`/notifier` inside the TUI.
+Restart the OpenCode TUI after installing. A full restart is the reliable way
+to load a newly installed TUI plugin; `/reload` may not pick it up.
 
-### From the zip
+### Option 2: Zip (offline)
 
 Windows:
 
@@ -48,38 +92,52 @@ macOS / Linux:
 ```sh
 unzip opencode-notifier.zip
 cd opencode-notifier
-./install.sh
+sh ./install.sh
 ```
 
 The installer copies the plugin to
-`~/.config/opencode/plugins/opencode-notifier`, where OpenCode discovers it
-automatically. Restart OpenCode, then run `/notifier`.
+`~/.config/opencode/plugins/opencode-notifier` (or
+`$XDG_CONFIG_HOME/opencode/plugins/opencode-notifier`). Restart OpenCode, then
+run `/notifier`.
 
-Use one install method. Installing the GitHub package and then running the zip
-installer creates two copies of the same plugin.
+### Verify the install
 
-The primary commands are `/notifier` (setup) and `/notifier-test` (test).
-`/notifier-setup`, `/task-alert-setup`, `/notifiertest`, and
-`/task-alert-test` remain as aliases.
+From your home directory:
 
-The shared package uses OpenCode's built-in chimes. If you already override
-`attention.sounds` in `cli.json`, your overrides are respected.
+```sh
+opencode plugin list
+```
+
+You should see `opencode-notifier`. Then restart the TUI and try `/notifier`.
+
+### Update
+
+```sh
+opencode plugin update github:towfiqueemrose/opencode-notifier
+```
+
+Restart the TUI after updating. A bare GitHub entry stays on the installed
+commit until you update it.
 
 ## Set up Telegram
 
-1. In Telegram, open **@BotFather** and send `/newbot`.
-2. Choose a name and a username ending in `bot`.
-3. Copy the bot token.
+Each person needs their own bot. Never share a bot token.
+
+1. Open **@BotFather** in Telegram and send `/newbot`.
+2. Choose a display name and a username ending in `bot`.
+3. Copy the token BotFather sends you.
 4. In OpenCode, run:
 
    ```text
    /notifier
    ```
 
-5. Paste the token. The wizard validates it and shows the bot username.
+5. Paste the token. The wizard validates it with Telegram and shows the bot
+   username.
 6. Open `https://t.me/<botusername>` and press **Start**.
-7. Choose **Check again** in the wizard. It finds your chat automatically.
-8. The wizard sends a test message and saves the credentials.
+7. Return to OpenCode and choose **Check again**. The wizard finds the chat
+   automatically.
+8. It sends a test message and saves the credentials.
 
 If the bot has a webhook, automatic chat detection is blocked. The wizard asks
 for the chat ID instead; get it from **@userinfobot**.
@@ -118,7 +176,8 @@ control of the bot. Each person should create their own bot.
 
 ## Configuration
 
-The plugin works without editing `opencode.json(c)` or `cli.json`. Defaults:
+The plugin works with its defaults; no manual configuration is required.
+`opencode plugin add` writes the plugin entry for you.
 
 | Option | Default | Effect |
 | --- | --- | --- |
@@ -131,13 +190,14 @@ The plugin works without editing `opencode.json(c)` or `cli.json`. Defaults:
 | `failures` | `true` | Alert on failed runs |
 | `debug` | `false` | Write `opencode-notifier-debug.log` |
 
-To pass options, configure the package in `opencode.json(c)`:
+To pass options, use an object entry in `opencode.json(c)` instead of the
+string entry:
 
 ```jsonc
 {
   "plugins": [
     {
-      "package": "opencode-notifier",
+      "package": "github:towfiqueemrose/opencode-notifier",
       "options": { "subagents": true, "debug": true }
     }
   ]
@@ -160,22 +220,39 @@ The plugin uses these built-in sound names: `done`, `subagent_done`,
 }
 ```
 
-### Disable
+The shared package uses OpenCode's built-in chimes. If you already override
+`attention.sounds` in `cli.json`, your overrides are respected.
+
+## Disable and uninstall
+
+Remove the GitHub install:
 
 ```sh
-opencode plugin remove opencode-notifier
+opencode plugin remove github:towfiqueemrose/opencode-notifier
 ```
 
-Or add `"-opencode-notifier"` to the `plugins` array in your global
-`opencode.json(c)`.
+For the zip install, delete:
+
+```text
+~/.config/opencode/plugins/opencode-notifier
+```
+
+To disable without removing, add `"-opencode-notifier"` to the `plugins` array
+in your global `opencode.json(c)`.
+
+Your `telegram.json` is not deleted automatically. Remove it yourself if you
+want to erase the credentials.
 
 ## Troubleshooting
 
-- **Telegram says `chat not found`:** open the bot and press Start, then run
-  `/notifier` again.
+- **`/notifier` is missing from the slash menu:** fully restart the TUI and
+  try again. Check `opencode plugin list`; try the aliases. A newly installed
+  TUI plugin is not always loaded by `/reload` alone.
+- **Telegram says `chat not found`:** open the bot and press **Start**, then
+  run `/notifier` again.
 - **No Telegram messages at all:** check `telegram.json` exists and
-  `enabled` is `true`; run `/notifier-test`. If you use environment
-  variables, confirm they are visible to the OpenCode process.
+  `"enabled": true`; run `/notifier-test`. If you use environment variables,
+  confirm they are visible to the OpenCode process.
 - **No toast:** on Windows the toast comes from PowerShell, so Windows may
   attribute it to **Windows PowerShell**. Check Focus Assist and notification
   settings. On macOS/Linux the toast uses OpenCode's system notification.
@@ -197,12 +274,13 @@ The package has two parts:
   plays a chime, and sends a Telegram message.
 
 The Windows toast is rendered by `assets/show-task-toast.ps1`. Other platforms
-call OpenCode's attention API.
+call OpenCode's attention API. Commands are registered in a global keymap
+layer so they are available from the home screen and inside sessions.
 
 ## Development
 
 ```sh
-# Local install
+# Local install from this checkout
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -Force
 
 # Restart/reload OpenCode, then:

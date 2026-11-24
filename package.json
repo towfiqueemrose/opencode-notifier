@@ -1,6 +1,6 @@
 {
   "name": "opencode-notifier",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Desktop, sound, and Telegram alerts for OpenCode task completion, questions, and permission requests.",
   "type": "module",
   "license": "MIT",

@@ -641,7 +641,7 @@ export default Plugin.define({
       if (chat === undefined) {
         await context.ui.dialog.alert({
           title: "No chat selected",
-          message: "Setup cancelled. Run /task-alert-setup again when you are ready.",
+          message: "Setup cancelled. Run /notifier again when you are ready.",
         })
         return
       }
@@ -662,7 +662,7 @@ export default Plugin.define({
       saveTelegramSettings(token, chat, username)
       context.ui.toast.show({
         title: "OpenCode Notifier",
-        message: `Telegram connected${username ? ` to @${username}` : ""}. Try /task-alert-test.`,
+        message: `Telegram connected${username ? ` to @${username}` : ""}. Try /notifier-test.`,
         variant: "success",
       })
     }
@@ -697,12 +697,15 @@ export default Plugin.define({
     })
 
     context.keymap.layer(() => ({
+      mode: "global",
       commands: [
         {
           id: "opencode-notifier.setup",
           title: "Set up Telegram alerts",
           group: "Notifier",
-          slash: { name: "task-alert-setup", aliases: ["notifier-setup"] },
+          palette: true,
+          suggested: true,
+          slash: { name: "notifier", aliases: ["notifier-setup", "task-alert-setup"] },
           run: async () => {
             try {
               await setupTelegram()
@@ -722,7 +725,9 @@ export default Plugin.define({
           id: "opencode-notifier.test",
           title: "Test task alerts",
           group: "Notifier",
-          slash: { name: "task-alert-test", aliases: ["notifier-test"] },
+          palette: true,
+          suggested: true,
+          slash: { name: "notifier-test", aliases: ["notifiertest", "task-alert-test"] },
           run: async () => {
             const message = "Test alert: audio, desktop notification, and Telegram"
             let toast = false

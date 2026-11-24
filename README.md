@@ -31,7 +31,7 @@ opencode plugin add github:towfiqueemrose/opencode-notifier
 ```
 
 Restart OpenCode if the plugin does not appear immediately, then run
-`/task-alert-setup` inside the TUI.
+`/notifier` inside the TUI.
 
 ### From the zip
 
@@ -53,10 +53,14 @@ cd opencode-notifier
 
 The installer copies the plugin to
 `~/.config/opencode/plugins/opencode-notifier`, where OpenCode discovers it
-automatically. Restart OpenCode, then run `/task-alert-setup`.
+automatically. Restart OpenCode, then run `/notifier`.
 
 Use one install method. Installing the GitHub package and then running the zip
 installer creates two copies of the same plugin.
+
+The primary commands are `/notifier` (setup) and `/notifier-test` (test).
+`/notifier-setup`, `/task-alert-setup`, `/notifiertest`, and
+`/task-alert-test` remain as aliases.
 
 The shared package uses OpenCode's built-in chimes. If you already override
 `attention.sounds` in `cli.json`, your overrides are respected.
@@ -69,7 +73,7 @@ The shared package uses OpenCode's built-in chimes. If you already override
 4. In OpenCode, run:
 
    ```text
-   /task-alert-setup
+   /notifier
    ```
 
 5. Paste the token. The wizard validates it and shows the bot username.
@@ -83,7 +87,7 @@ for the chat ID instead; get it from **@userinfobot**.
 Test the whole path with:
 
 ```text
-/task-alert-test
+/notifier-test
 ```
 
 ## Credentials
@@ -168,9 +172,9 @@ Or add `"-opencode-notifier"` to the `plugins` array in your global
 ## Troubleshooting
 
 - **Telegram says `chat not found`:** open the bot and press Start, then run
-  `/task-alert-setup` again.
+  `/notifier` again.
 - **No Telegram messages at all:** check `telegram.json` exists and
-  `enabled` is `true`; run `/task-alert-test`. If you use environment
+  `enabled` is `true`; run `/notifier-test`. If you use environment
   variables, confirm they are visible to the OpenCode process.
 - **No toast:** on Windows the toast comes from PowerShell, so Windows may
   attribute it to **Windows PowerShell**. Check Focus Assist and notification
@@ -202,8 +206,8 @@ call OpenCode's attention API.
 powershell -ExecutionPolicy Bypass -File .\install.ps1 -Force
 
 # Restart/reload OpenCode, then:
-/task-alert-setup
-/task-alert-test
+/notifier
+/notifier-test
 ```
 
 ## License
